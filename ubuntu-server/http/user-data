@@ -1,0 +1,35 @@
+#cloud-config
+autoinstall:
+  version: 1
+  locale: en_US
+  keyboard:
+    layout: us
+  timezone: America/Chicago
+
+  ssh:
+    install-server: true
+    allow-pw: true
+    disable_root: true
+  package_update: false
+  package_upgrade: false
+  storage:
+    layout:
+      name: direct
+    swap:
+      size: 0
+  user-data:
+    users:
+      - name: packer
+        groups: adm,sudo
+        lock_passwd: false
+        sudo: 'ALL=(ALL) NOPASSWD:ALL'
+        shell: /bin/bash
+        ssh_authorized_keys:
+          - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHHFXoyu7f1w7Q0vcFxNfhKlhyczg/PoQemnyA57d0lB packer@lab02"
+      - name: ansible
+        groups: adm,sudo
+        lock_passwd: false
+        sudo: 'ALL=(ALL) NOPASSWD:ALL'
+        shell: /bin/bash
+        ssh_authorized_keys:
+          - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHHFXoyu7f1w7Q0vcFxNfhKlhyczg/PoQemnyA57d0lB packer@lab02"

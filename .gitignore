@@ -1,0 +1,21 @@
+# Packer cache and outputs
+packer_cache/
+output-*/
+*.ova
+*.ovf
+*.mf
+*.log
+# ISOs and large binaries
+iso/
+*.iso
+# Secrets & local vars
+*.pkrvars.hcl
+*.auto.pkrvars.hcl
+secrets/
+*.key
+*.pem
+# EXCEPTIONS: allow these two auto var files to be committed
+ubuntu-server/ubuntu-server.auto.pkrvars.hcl
+rocky-server/rocky-server.auto.pkrvars.hcl
+
+*.DS_Store
