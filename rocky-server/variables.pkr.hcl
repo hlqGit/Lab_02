@@ -15,13 +15,13 @@ variable "ssh_username" {
 }
 
 variable "ssh_private_key_file" {
-  type = string
+  type      = string
   sensitive = true
 }
 
-variable "ssh_public_key_file" {
-  type = string
-  sensitive = true
+variable "ssh_public_key" {
+  type    = string
+  default = null
 }
 
 # General VM settings
@@ -39,4 +39,19 @@ variable "disk_size_mb" {
 
 variable "vm_name" {
   type = string
+}
+
+variable "selinux_policy" {
+  type    = string
+  default = null
+}
+
+variable "firewall_enabled" {
+  type    = string
+  default = null
+}
+
+variable "updates_policy" {
+  type    = string
+  default = null
 }
