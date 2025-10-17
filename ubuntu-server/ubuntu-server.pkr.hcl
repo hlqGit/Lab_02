@@ -63,11 +63,22 @@ build {
 
   provisioner "shell" {
     inline = [
-      "sudo apt-get update -y",
-      "sudo apt-get install nginx -y",
-      "echo '<h1>Built by Packer for Lab 02</h1>' | sudo tee /var/www/html/index.html",
+      "sudo apt-get update",
+      "sudo apt-get install -y nginx",
+      "echo '<h1>Hi my name is Justin. Welcome to your Packer-built NGINX server!</h1>' | sudo tee /var/www/html/index.html",
       "sudo systemctl enable nginx",
       "sudo systemctl start nginx"
+    ]
+  }
+
+  provisioner "shell" {
+    script = "../scripts/install_docker_ubuntu.sh"
+  }
+
+  provisioner "shell" {
+    inline = [
+    "docker --version || sudo docker --version",
+    "docker run --rm hello-world || sudo docker run --rm hello-world"
     ]
   }
 }

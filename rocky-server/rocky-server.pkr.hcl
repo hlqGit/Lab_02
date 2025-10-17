@@ -32,7 +32,7 @@ source "virtualbox-iso" "rocky" {
   ssh_username           = var.ssh_username
   ssh_private_key_file   = var.ssh_private_key_file
   ssh_skip_nat_mapping   = true
-  ssh_port               = 2222
+  ssh_port               = 2223
   ssh_timeout            = "60m"
   ssh_handshake_attempts = 100
 
@@ -48,7 +48,7 @@ source "virtualbox-iso" "rocky" {
   headless = false
 
   vboxmanage = [
-    ["modifyvm", "{{.Name}}", "--natpf1", "ssh-{{.Name}},tcp,,2222,,22"],
+    ["modifyvm", "{{.Name}}", "--natpf1", "ssh-{{.Name}},tcp,,2223,,22"],
     ["modifyvm", "{{.Name}}", "--natpf1", "http-{{.Name}},tcp,,8080,,80"]
   ]
 
@@ -67,13 +67,29 @@ build {
       "sudo firewall-cmd --permanent --zone=public --add-service=http",
       "sudo firewall-cmd --permanent --zone=public --add-service=https",
       "sudo firewall-cmd --permanent --zone=public --add-port=8080/tcp",
-      "sudo firewall-cmd --reload",
+      "sudo firewall-cmd --reload"
+    ]
+  }
+
+  provisioner "shell" {
+    inline = [
       "sudo dnf update -y",
       "sudo dnf install -y epel-release",
       "sudo dnf install -y nginx",
-      "echo '<h1>Built by Packer for Lab 02 (Rocky Linux)</h1>' | sudo tee /usr/share/nginx/html/index.html",
+      "echo '<h1>Hi my name is Justin. Welcome to your Packer-built NGINX server!</h1>' | sudo tee /usr/share/nginx/html/index.html",
       "sudo systemctl enable nginx",
       "sudo systemctl start nginx"
     ]
+  }
+
+  provisioner "shell" {
+    script = "../scripts/install_docker_rocky.sh"
+  }
+
+  provisioner "shell" {
+    inline = [
+      "docker --version || sudo docker --version",
+      "docker run --rm hello-world || sudo docker run --rm hello-world"
+    ] 
   }
 }
